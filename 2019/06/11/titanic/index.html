@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="上次说了特征工程，这次照着别人的博客来复现一下kaggle上的hello world，python语法之类的我还是不熟悉，所以尽量把第一个项目做好，我这里仅仅是把大体的流程介绍一下，不会涉及到太多的语法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kaggle入门：逻辑回归应用之泰坦尼克之灾">
+<meta property="og:url" content="https://luoxjnono.github.io/2019/06/11/titanic/index.html">
+<meta property="og:site_name" content="lxj&#39;s blog">
+<meta property="og:description" content="上次说了特征工程，这次照着别人的博客来复现一下kaggle上的hello world，python语法之类的我还是不熟悉，所以尽量把第一个项目做好，我这里仅仅是把大体的流程介绍一下，不会涉及到太多的语法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://luoxjnono.github.io/2019/06/11/titanic/5.jpg">
+<meta property="og:image" content="https://luoxjnono.github.io/2019/06/11/titanic/18.jpg">
+<meta property="og:image" content="https://luoxjnono.github.io/2019/06/11/titanic/100f3a39031e73bd0a8.jpg">
+<meta property="og:updated_time" content="2019-06-11T08:26:14.179Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kaggle入门：逻辑回归应用之泰坦尼克之灾">
+<meta name="twitter:description" content="上次说了特征工程，这次照着别人的博客来复现一下kaggle上的hello world，python语法之类的我还是不熟悉，所以尽量把第一个项目做好，我这里仅仅是把大体的流程介绍一下，不会涉及到太多的语法。">
+<meta name="twitter:image" content="https://luoxjnono.github.io/2019/06/11/titanic/5.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="lxj's blog" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://luoxjnono.github.io/2019/06/11/titanic/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>kaggle入门：逻辑回归应用之泰坦尼克之灾 | lxj's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+<a href="https://github.com/luoxjnono" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">lxj's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">悟已往之不谏，知来者之可追。</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://luoxjnono.github.io/2019/06/11/titanic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xj luo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lxj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kaggle入门：逻辑回归应用之泰坦尼克之灾
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-11 15:50:01 / 修改时间：16:26:14" itemprop="dateCreated datePublished" datetime="2019-06-11T15:50:01+08:00">2019-06-11</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/kaggle/" itemprop="url" rel="index"><span itemprop="name">kaggle</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上次说了特征工程，这次照着别人的博客来复现一下kaggle上的hello world，python语法之类的我还是不熟悉，所以尽量把第一个项目做好，我<strong>这里仅仅是把大体的流程介绍一下，不会涉及到太多的语法。</strong></p>
+<a id="more"></a>
+
+
+
+
+
+
+
+<p>作者： 寒小阳 出处：<a href="http://blog.csdn.net/han_xiaoyang/article/details/49797143" target="_blank" rel="noopener">http://blog.csdn.net/han_xiaoyang/article/details/49797143</a> </p>
+<p>声明：版权所有，转载请注明出处，谢谢。</p>
+<p>Github链接：<a href="https://github.com/HanXiaoyang/Kaggle_Titanic" target="_blank" rel="noopener">https://github.com/HanXiaoyang/Kaggle_Titanic</a></p>
+<p>题目链接：<a href="https://www.kaggle.com/c/titanic" target="_blank" rel="noopener">https://www.kaggle.com/c/titanic</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>泰坦尼克号问题之背景</p>
+<p>就是那个大家都熟悉的『Jack and Rose』的故事，豪华游艇倒了，大家都惊恐逃生，可是救生艇的数量有限，无法人人都有，副船长发话了『lady and kid first！』，所以是否获救其实并非随机，而是基于一些背景有rank先后的。</p>
+<p>训练和测试数据是一些乘客的个人信息以及存活状况，要尝试根据它生成合适的模型并预测其他人的存活状况。对，<strong>这是一个二分类问题，是我们之前讨论的logistic regression所能处理的范畴。</strong></p>
+<p>手把手教程马上就来，先来两条我看到的，觉得很重要的经验。</p>
+<p>印象中Andrew Ng老师似乎在coursera上说过，应用机器学习，千万不要一上来就试图做到完美，<strong>先撸一个baseline的model出来，再进行后续的分析步骤，一步步提高</strong>，所谓后续步骤可能包括『分析model现在的状态(欠/过拟合)，分析我们使用的feature的作用大小，进行feature selection，以及我们模型下的bad case和产生的原因』等等。</p>
+<p>Kaggle上的大神们，也分享过一些experience，说几条我记得的哈：</p>
+<p><strong>『对数据的认识太重要了！』</strong><br><strong>『数据中的特殊点/离群点的分析和处理太重要了！』</strong><br><strong>『特征工程(feature engineering)太重要了！在很多Kaggle的场景下，甚至比model本身还要重要』</strong></p>
+<p><strong>『要做模型融合(model ensemble)啊啊啊！』</strong></p>
+<h2 id="初探数据"><a href="#初探数据" class="headerlink" title="初探数据"></a>初探数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment">#数据分析</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment">#科学计算</span></span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series,DataFrame</span><br><span class="line"></span><br><span class="line">data_train = pd.read_csv(<span class="string">"/Users/Hanxiaoyang/Titanic_data/Train.csv"</span>)</span><br><span class="line">data_train</span><br></pre></td></tr></table></figure>
+
+<p>得到典型的dataframe格式</p>
+<p><img src="/2019/06/11/titanic/5.jpg" alt="5"></p>
+<p>读取了数据之后，我们可以了解一下大体的情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#各个属性的数目以及百分比</span></span><br><span class="line">data_train.info()</span><br><span class="line">data_train.describe()</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据初步分析"><a href="#数据初步分析" class="headerlink" title="数据初步分析"></a>数据初步分析</h2><p>每个乘客都这么多属性，那我们咋知道哪些属性更有用，而又应该怎么用它们啊？说实话这会儿我也不知道，但我们记得前面提到过</p>
+<p><strong>- 『对数据的认识太重要了！』</strong></p>
+<p><strong>- 『对数据的认识太重要了！』</strong></p>
+<p><strong>- 『对数据的认识太重要了！』</strong></p>
+<p>重要的事情说三遍，恩，说完了。仅仅最上面的对数据了解，依旧无法给我们提供想法和思路。<strong>我们再深入一点来看看我们的数据，看看每个/多个 属性和最后的Survived之间有着什么样的关系呢。</strong>  </p>
+<p>接下来就是数据分析的内容了，我们分别考察下列情况：</p>
+<p><strong>乘客各属性分布</strong>（各个属性的人数）</p>
+<p>然后是<strong>各个属性与获救结果的关联统计</strong>（看属性与获救结果是否有关）</p>
+<p>ps：这个画图真有意思，这个库很不错</p>
+<h2 id="简单数据预处理"><a href="#简单数据预处理" class="headerlink" title="简单数据预处理"></a>简单数据预处理</h2><p>大体数据的情况看了一遍，对感兴趣的属性也有个大概的了解了。 下一步干啥？<strong>咱们该处理处理这些数据，为机器学习建模做点准备了。</strong></p>
+<p>对了，我这里说的数据预处理，其实就包括了很多Kaggler津津乐道的feature engineering过程，灰常灰常有必要！</p>
+<ul>
+<li><strong>『特征工程(feature engineering)太重要了！』</strong></li>
+<li><strong>『特征工程(feature engineering)太重要了！』</strong></li>
+<li><strong>『特征工程(feature engineering)太重要了！』</strong></li>
+</ul>
+<p>恩，重要的事情说三遍。</p>
+<p><strong>先从最突出的数据属性开始吧，对，Cabin和Age，有丢失数据实在是对下一步工作影响太大。</strong></p>
+<p>先说Cabin，暂时我们就按照刚才说的，按Cabin有无数据，将这个属性处理成Yes和No两种类型吧。</p>
+<p>我们这里用scikit-learn中的RandomForest来拟合一下缺失的年龄数据(注：RandomForest是一个用在原始数据中做不同采样，建立多颗DecisionTree，再进行average等等来降低过拟合现象，提高结果的机器学习算法，我们之后会介绍到)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment">### 使用 RandomForestClassifier 填补缺失的年龄属性</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_missing_ages</span><span class="params">(df)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 把已有的数值型特征取出来丢进Random Forest Regressor中</span></span><br><span class="line">    age_df = df[[<span class="string">'Age'</span>,<span class="string">'Fare'</span>, <span class="string">'Parch'</span>, <span class="string">'SibSp'</span>, <span class="string">'Pclass'</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 乘客分成已知年龄和未知年龄两部分</span></span><br><span class="line">    known_age = age_df[age_df.Age.notnull()].values</span><br><span class="line">    unknown_age = age_df[age_df.Age.isnull()].values</span><br><span class="line"></span><br><span class="line">    <span class="comment"># y即目标年龄</span></span><br><span class="line">    y = known_age[:, <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># X即特征属性值</span></span><br><span class="line">    X = known_age[:, <span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># fit到RandomForestRegressor之中</span></span><br><span class="line">    rfr = RandomForestRegressor(random_state=<span class="number">0</span>, n_estimators=<span class="number">2000</span>, n_jobs=<span class="number">-1</span>)</span><br><span class="line">    rfr.fit(X, y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 用得到的模型进行未知年龄结果预测</span></span><br><span class="line">    predictedAges = rfr.predict(unknown_age[:, <span class="number">1</span>::])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 用得到的预测结果填补原缺失数据</span></span><br><span class="line">    df.loc[ (df.Age.isnull()), <span class="string">'Age'</span> ] = predictedAges </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> df, rfr</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_Cabin_type</span><span class="params">(df)</span>:</span></span><br><span class="line">    df.loc[ (df.Cabin.notnull()), <span class="string">'Cabin'</span> ] = <span class="string">"Yes"</span></span><br><span class="line">    df.loc[ (df.Cabin.isnull()), <span class="string">'Cabin'</span> ] = <span class="string">"No"</span></span><br><span class="line">    <span class="keyword">return</span> df</span><br><span class="line"></span><br><span class="line">data_train, rfr = set_missing_ages(data_train)</span><br><span class="line">data_train = set_Cabin_type(data_train)</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就把数据补全了</p>
+<p><strong>因为逻辑回归建模时，需要输入的特征都是数值型特征，我们通常会先对类目型的特征因子化。 什么叫做因子化呢？字面意思，把不是数值型的类目属性全都转成0，1的数值属性</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dummies_Cabin = pd.get_dummies(data_train[<span class="string">'Cabin'</span>], prefix= <span class="string">'Cabin'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Embarked = pd.get_dummies(data_train[<span class="string">'Embarked'</span>], prefix= <span class="string">'Embarked'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Sex = pd.get_dummies(data_train[<span class="string">'Sex'</span>], prefix= <span class="string">'Sex'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Pclass = pd.get_dummies(data_train[<span class="string">'Pclass'</span>], prefix= <span class="string">'Pclass'</span>)</span><br><span class="line"></span><br><span class="line">df = pd.concat([data_train, dummies_Cabin, dummies_Embarked, dummies_Sex, dummies_Pclass], axis=<span class="number">1</span>)</span><br><span class="line">df.drop([<span class="string">'Pclass'</span>, <span class="string">'Name'</span>, <span class="string">'Sex'</span>, <span class="string">'Ticket'</span>, <span class="string">'Cabin'</span>, <span class="string">'Embarked'</span>], axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>这样，看起来，是不是我们需要的属性值都有了，且它们都是数值型属性呢。</p>
+<p>有一种临近结果的宠宠欲动感吧，莫急莫急，我们还得做一些处理，仔细看看Age和Fare两个属性，乘客的数值幅度变化，也忒大了吧！！如果大家了解逻辑回归与梯度下降的话，会知道，各属性值之间scale差距太大，将对收敛速度造成几万点伤害值！甚至不收敛！ (╬▔皿▔)…所以我们先用scikit-learn里面的preprocessing模块对这俩货做一个scaling，所谓scaling，其实就是将一些变化幅度较大的特征化到[-1,1]之内。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sklearn.preprocessing <span class="keyword">as</span> preprocessing</span><br><span class="line">scaler = preprocessing.StandardScaler()</span><br><span class="line">age_scale_param = scaler.fit(df[<span class="string">'Age'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">df[<span class="string">'Age_scaled'</span>] = scaler.fit_transform(df[<span class="string">'Age'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>), age_scale_param)</span><br><span class="line">fare_scale_param = scaler.fit(df[<span class="string">'Fare'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">df[<span class="string">'Fare_scaled'</span>] = scaler.fit_transform(df[<span class="string">'Fare'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>), fare_scale_param)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/06/11/titanic/18.jpg" alt="18"></p>
+<p>恩，好看多了，万事俱备，只欠建模。马上就要看到成效了，哈哈。</p>
+<h2 id="逻辑回归建模"><a href="#逻辑回归建模" class="headerlink" title="逻辑回归建模"></a>逻辑回归建模</h2><p><strong>我们把需要的feature字段取出来，转成numpy格式，使用scikit-learn中的LogisticRegression建模。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用正则取出我们要的属性值</span></span><br><span class="line">train_df = df.filter(regex=<span class="string">'Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*'</span>)</span><br><span class="line">train_np = train_df.values</span><br><span class="line"></span><br><span class="line"><span class="comment"># y即第0列：Survival结果</span></span><br><span class="line">y = train_np[:, <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># X即第1列及以后：特征属性值</span></span><br><span class="line">X = train_np[:, <span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># fit到LogisticRegression之中</span></span><br><span class="line">clf = linear_model.LogisticRegression(solver=<span class="string">'liblinear'</span>,C=<span class="number">1.0</span>, penalty=<span class="string">'l1'</span>, tol=<span class="number">1e-6</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line">clf</span><br></pre></td></tr></table></figure>
+
+<p>good，很顺利，我们得到了一个model。</p>
+<p>先淡定！淡定！你以为把test.csv直接丢进model里就能拿到结果啊…骚年，图样图森破啊！我们的”test_data”也要做和”train_data”一样的预处理啊！！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">data_test = pd.read_csv(<span class="string">"/home/kesci/input/titanic8120/test.csv"</span>)</span><br><span class="line">data_test.loc[ (data_test.Fare.isnull()), <span class="string">'Fare'</span> ] = <span class="number">0</span></span><br><span class="line"><span class="comment"># 接着我们对test_data做和train_data中一致的特征变换</span></span><br><span class="line"><span class="comment"># 首先用同样的RandomForestRegressor模型填上丢失的年龄</span></span><br><span class="line">tmp_df = data_test[[<span class="string">'Age'</span>,<span class="string">'Fare'</span>, <span class="string">'Parch'</span>, <span class="string">'SibSp'</span>, <span class="string">'Pclass'</span>]]</span><br><span class="line">null_age = tmp_df[data_test.Age.isnull()].values</span><br><span class="line"><span class="comment"># 根据特征属性X预测年龄并补上</span></span><br><span class="line">X = null_age[:, <span class="number">1</span>:]</span><br><span class="line">predictedAges = rfr.predict(X)</span><br><span class="line">data_test.loc[ (data_test.Age.isnull()), <span class="string">'Age'</span> ] = predictedAges</span><br><span class="line"></span><br><span class="line"><span class="comment">#数据正规化</span></span><br><span class="line">data_test = set_Cabin_type(data_test)</span><br><span class="line">dummies_Cabin = pd.get_dummies(data_test[<span class="string">'Cabin'</span>], prefix= <span class="string">'Cabin'</span>)</span><br><span class="line">dummies_Embarked = pd.get_dummies(data_test[<span class="string">'Embarked'</span>], prefix= <span class="string">'Embarked'</span>)</span><br><span class="line">dummies_Sex = pd.get_dummies(data_test[<span class="string">'Sex'</span>], prefix= <span class="string">'Sex'</span>)</span><br><span class="line">dummies_Pclass = pd.get_dummies(data_test[<span class="string">'Pclass'</span>], prefix= <span class="string">'Pclass'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df_test = pd.concat([data_test, dummies_Cabin, dummies_Embarked, dummies_Sex, dummies_Pclass], axis=<span class="number">1</span>)</span><br><span class="line">df_test.drop([<span class="string">'Pclass'</span>, <span class="string">'Name'</span>, <span class="string">'Sex'</span>, <span class="string">'Ticket'</span>, <span class="string">'Cabin'</span>, <span class="string">'Embarked'</span>], axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#归一化</span></span><br><span class="line">df_test[<span class="string">'Age_scaled'</span>] = scaler.fit_transform(df_test[<span class="string">'Age'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>), age_scale_param)</span><br><span class="line">df_test[<span class="string">'Fare_scaled'</span>] = scaler.fit_transform(df_test[<span class="string">'Fare'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>), fare_scale_param)</span><br><span class="line">df_test.head()</span><br></pre></td></tr></table></figure>
+
+<p>然后就真的可以丢尽model了<del>~</del></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test = df_test.filter(regex=<span class="string">'Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*'</span>)</span><br><span class="line">predictions = clf.predict(test)</span><br><span class="line">result = pd.DataFrame(&#123;<span class="string">'PassengerId'</span>:data_test[<span class="string">'PassengerId'</span>].values, <span class="string">'Survived'</span>:predictions.astype(np.int32)&#125;)</span><br><span class="line">result.to_csv(<span class="string">"/home/kesci/work/savedata/titanic/logistic_regression_predictions.csv"</span>, index=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果符合预期，然后去make a submission啦啦啦！</p>
+<h2 id="逻辑回归系统优化"><a href="#逻辑回归系统优化" class="headerlink" title="逻辑回归系统优化"></a>逻辑回归系统优化</h2><p>亲，你以为结果提交上了，就完事了？ 我不会告诉你，这只是万里长征第一步啊(泪牛满面)！！！<strong>这才刚撸完baseline model啊！！！还得优化啊！！！</strong></p>
+<p>……未完持续，等我搞定baseline后再来继续优化</p>
+<p>本文中用机器学习解决问题的过程大概如下图所示：</p>
+<p><img src="/2019/06/11/titanic/100f3a39031e73bd0a8.jpg" alt="100f3a39031e73bd0a8"></p>
+
+      
+    </div>
+
+    
+
+
+    
+    
+    
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>有空来玩-------------</div>
+    
+</div>
+  
+</div>
+
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="xj luo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="xj luo 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/11/逻辑回归/" rel="next" title="机器学习初步：逻辑回归">
+                <i class="fa fa-chevron-left"></i> 机器学习初步：逻辑回归
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/14/进程/" rel="prev" title="操作系统之进程切换">
+                操作系统之进程切换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDUyMy8yMTA1NA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+
+             <a href="/">
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="xj luo">
+                </a>
+            
+              <p class="site-author-name" itemprop="name">xj luo</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/luoxjnono" title="GitHub &rarr; https://github.com/luoxjnono" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/luoxjnono@163.com" title="E-Mail &rarr; luoxjnono@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.bilibili.com/" title="https://www.bilibili.com/" rel="noopener" target="_blank">bilibili</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jiumodiary.com/" title="https://www.jiumodiary.com/" rel="noopener" target="_blank">搜书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初探数据"><span class="nav-number">2.</span> <span class="nav-text">初探数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据初步分析"><span class="nav-number">3.</span> <span class="nav-text">数据初步分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单数据预处理"><span class="nav-number">4.</span> <span class="nav-text">简单数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归建模"><span class="nav-number">5.</span> <span class="nav-text">逻辑回归建模</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归系统优化"><span class="nav-number">6.</span> <span class="nav-text">逻辑回归系统优化</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xj luo</span>
+
+
+
+  
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2019/06/11/titanic/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>
