@@ -111,22 +111,14 @@
 
 
 
-  <meta name="description" content="背景：生产者-消费者问题：并发访和操作同一个数据时的执行结果与访问发生的顺序有关，而进程的同步对操作系统至关重要。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="进程同步">
-<meta property="og:url" content="https://luoxjnono.github.io/2019/06/10/进程同步/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="leetcode2">
+<meta property="og:url" content="https://luoxjnono.github.io/2020/05/19/leetcode2/index.html">
 <meta property="og:site_name" content="lxj&#39;s blog">
-<meta property="og:description" content="背景：生产者-消费者问题：并发访和操作同一个数据时的执行结果与访问发生的顺序有关，而进程的同步对操作系统至关重要。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://luoxjnono.github.io/2019/06/10/进程同步/1560164888222.png">
-<meta property="og:image" content="https://luoxjnono.github.io/2019/06/10/进程同步/1560162864230.png">
-<meta property="og:image" content="https://luoxjnono.github.io/2019/06/10/进程同步/1560163812160.png">
-<meta property="og:image" content="https://luoxjnono.github.io/2019/06/10/进程同步/1560164384846.png">
-<meta property="og:updated_time" content="2019-06-13T12:10:54.490Z">
+<meta property="og:updated_time" content="2020-05-19T02:37:32.368Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="进程同步">
-<meta name="twitter:description" content="背景：生产者-消费者问题：并发访和操作同一个数据时的执行结果与访问发生的顺序有关，而进程的同步对操作系统至关重要。">
-<meta name="twitter:image" content="https://luoxjnono.github.io/2019/06/10/进程同步/1560164888222.png">
+<meta name="twitter:title" content="leetcode2">
 
 
 
@@ -136,7 +128,7 @@
 
   
   
-  <link rel="canonical" href="https://luoxjnono.github.io/2019/06/10/进程同步/">
+  <link rel="canonical" href="https://luoxjnono.github.io/2020/05/19/leetcode2/">
 
 
 
@@ -146,7 +138,7 @@
   };
 </script>
 
-  <title>进程同步 | lxj's blog</title>
+  <title>leetcode2 | lxj's blog</title>
   
 
 
@@ -395,7 +387,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://luoxjnono.github.io/2019/06/10/进程同步/">
+    <link itemprop="mainEntityOfPage" href="https://luoxjnono.github.io/2020/05/19/leetcode2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xj luo">
@@ -412,7 +404,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">进程同步
+          <h1 class="post-title" itemprop="name headline">leetcode2
 
               
             
@@ -438,46 +430,12 @@
                 
               
 
-              <time title="创建时间：2019-06-10 19:37:51" itemprop="dateCreated datePublished" datetime="2019-06-10T19:37:51+08:00">2019-06-10</time>
+              <time title="创建时间：2020-05-19 10:37:32" itemprop="dateCreated datePublished" datetime="2020-05-19T10:37:32+08:00">2020-05-19</time>
             
 
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-13 20:10:54" itemprop="dateModified" datetime="2019-06-13T20:10:54+08:00">2019-06-13</time>
-              
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -508,7 +466,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">1.7k</span>
+                <span title="本文字数">0</span>
               
 
               
@@ -522,7 +480,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">1 分钟</span>
               
             </div>
           
@@ -542,99 +500,7 @@
       
 
       
-        <p>背景：生产者-消费者问题：并发访和操作同一个数据时的执行结果与访问发生的顺序有关，而进程的同步对操作系统至关重要。</p>
-<a id="more"></a>
-
-
-
-
-
-<h3 id="进程并发执行的好处"><a href="#进程并发执行的好处" class="headerlink" title="进程并发执行的好处"></a>进程并发执行的好处</h3><p>进程需要与计算机中其他进程或设备进行协作</p>
-<ol>
-<li>共享资源</li>
-<li>加速<ul>
-<li>I/O操作和CPU计算可以并行</li>
-<li>程序可划分成多个模块放在多个处理机上并行执行</li>
-</ul>
-</li>
-<li>模块化<ul>
-<li>将大程序分解成小程序(gcc会调用 cpp cc1 cc2 as ld)</li>
-<li>使系统易于复用和扩展</li>
-</ul>
-</li>
-</ol>
-<h4 id="进程的交互关系"><a href="#进程的交互关系" class="headerlink" title="进程的交互关系"></a>进程的交互关系</h4><ul>
-<li>互斥(Mutual Exclusion)<ul>
-<li>一个进程占用资源 其他进程不能使用</li>
-</ul>
-</li>
-<li>死锁(Deadlock)<ul>
-<li>多个进程各占用部分资源 形成循环等待</li>
-</ul>
-</li>
-<li>饥饿(Starvation)<ul>
-<li>其他进程可能轮流占用资源 一个进程一直得不到资源</li>
-</ul>
-</li>
-</ul>
-<h2 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h2><p>临界区问题：字面意思</p>
-<p><strong>临界区</strong>：当一个进程进入临界区时，没有其他进程可以在临界区内执行。</p>
-<p>满足的三项要求：</p>
-<ul>
-<li><strong>互斥</strong>：不能同时在临界区执行</li>
-<li><strong>前进</strong>：一定时间内选择进入临界区的进程</li>
-<li><strong>有限等待</strong>：不能等太久</li>
-</ul>
-<p>处理临界区问题的两种方法：字面意思</p>
-<p><strong>抢占内核</strong></p>
-<p><strong>非抢占内核</strong></p>
-<h2 id="软件实现"><a href="#软件实现" class="headerlink" title="软件实现"></a>软件实现</h2><p>Peterson 算法：两个进程在临界区与剩余区间<strong>交替执行</strong></p>
-<h2 id="硬件同步：锁"><a href="#硬件同步：锁" class="headerlink" title="硬件同步：锁"></a>硬件同步：锁</h2><p>一个进程进入临界区之前必须得到锁，退出后释放锁</p>
-<p>对于单处理器环境，只需要在修改共享变量时禁止中断就行了（非抢占式）</p>
-<p>多处理器环境，这种做法会降低效率的，解决方法时原子操作，这就需要<strong>硬件上的支持</strong>了（锁）</p>
-<p><img src="/2019/06/10/进程同步/1560164888222.png" alt="1560164888222"></p>
-<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>以上都是基础知识，重点是信号量</p>
-<p><img src="/2019/06/10/进程同步/1560162864230.png" alt="1560162864230"></p>
-<p>信号量的用途很广，比较简单的就是司机乘务员之类的，通过信号量解决各种同步问题（比如实现顺序的先后）。</p>
-<p>可以用二进制信号量来解决临界区问题（0和1之间的）</p>
-<p>有了信号量之后临界区问题变得简单得多，现在来说说信号量的实现</p>
-<p><strong>实现</strong></p>
-<p><strong>忙等待</strong>：看程序可以知道为进入临界区的进程一直在循环之中，这是多道程序不允许的，这样做会浪费cpu时间</p>
-<p><strong>自旋锁</strong>：会处于忙等待的信号量</p>
-<p><strong>克服忙等</strong>：修改PV操作呗</p>
-<p>优点：节省cpu时间，提高cpu的利用率，让cpu被其他进程有效的利用</p>
-<p>缺点：行下文切换花费时间，如果锁占用时间短，那么会得不偿失</p>
-<p><strong>实现</strong>：在wait操作时，如果要等待，阻塞自己，这个操作将进程放入与信号量相关的等待队列中，并将进程的状态切换为等待状态，然后指向cpu调度程序，选择另一个进程来执行。</p>
-<p>当执行signal（）操作之后，通过wakeup操作重新执行该进程，即将状态转换为就绪状态，然后该进程放到就绪队列之中</p>
-<p><img src="/2019/06/10/进程同步/1560163812160.png" alt="1560163812160"></p>
-<p><strong>（S是信号量）</strong></p>
-<p>注意block和wakeup之间的对应关系</p>
-<p>说了那么多，信号量的关键之处在于他们是原子地执行，这个就是硬件的事儿了</p>
-<p>死锁：第七章内容</p>
-<p>饥饿：进程在信号量内无限期阻塞（栈）</p>
-<p>说了那么多还是同步的问题</p>
-<p>好像对于临界区地实现没有过多的关注</p>
-<p>线面介绍几个经典的同步问题</p>
-<h2 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h2><p>有限缓冲问题：生产者-消费者问题</p>
-<p>读者-写者问题：字面意思</p>
-<p><img src="/2019/06/10/进程同步/1560164384846.png" alt="1560164384846"></p>
-<p>哲学家就餐问题：</p>
-<p>信号量不能很好的解决这个问题，第七章死锁会讲到</p>
-<p>管程：略</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>实现同步互斥需要解决临界区问题</p>
-<p>临界区一般是共享变量地操作</p>
-<p>信号量可以实现同步互斥</p>
-<p><strong>进程互斥</strong><br>进程互斥：在多个程序中，有<strong>两个进程不可以同时进行</strong>（例如读，写操作）。</p>
-<p>竞争资源（临界资源）</p>
-<p>当并发进程竞争使用同一资源时，他们之间就会发生冲突。如果操作系统将资源分配给其中的某一个进程使用，另一个进程就必须等待，直到申请的资源可用时，由操作系统分配给他们。</p>
-<p>如果竞争资源的进程太多，这些进程还必须等待在一个队列中，如就绪队列，阻塞队列等。</p>
-<p>一种极端的情况是，被阻塞进程永远得不到申请的资源，而死锁。</p>
-<p>采用互斥方式，使用临界资源</p>
-<p>资源的互斥，进程使用上述这类资源的时候，只能有一个进程对资源进行处理。（临界区）</p>
-<p><strong>进程同步</strong></p>
-<p> 进程同步是一个操作系统级别的概念,是在多道程序的环境下，存在着不同的制约关系，为了协调这种互相制约的关系，实现资源共享和进程协作，从而避免进程之间的冲突，引入了进程同步。比如说进程A需要从缓冲区读取进程B产生的信息，当缓冲区为空时，进程B因为读取不到信息而被阻塞。而当进程A产生信息放入缓冲区时，进程B才会被唤醒。</p>
-<p>同步互斥解决方法（同样是实现临界区地方法）：<strong>软件、硬件、信号量、管程</strong></p>
-
+        
       
     </div>
 
@@ -729,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/09/特征工程/" rel="next" title="机器学习之特征工程">
-                <i class="fa fa-chevron-left"></i> 机器学习之特征工程
+              <a href="/2020/05/18/leetcode1/" rel="next" title="leetcode经典链表相关题目(思路、方法、code)">
+                <i class="fa fa-chevron-left"></i> leetcode经典链表相关题目(思路、方法、code)
               </a>
             
           </div>
@@ -738,10 +604,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/11/逻辑回归/" rel="prev" title="机器学习初步：逻辑回归">
-                机器学习初步：逻辑回归 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -791,17 +653,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -958,23 +811,6 @@
         </div>
       </div>
 
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程并发执行的好处"><span class="nav-number">1.</span> <span class="nav-text">进程并发执行的好处</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的交互关系"><span class="nav-number">1.1.</span> <span class="nav-text">进程的交互关系</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#临界区"><span class="nav-number"></span> <span class="nav-text">临界区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件实现"><span class="nav-number"></span> <span class="nav-text">软件实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件同步：锁"><span class="nav-number"></span> <span class="nav-text">硬件同步：锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number"></span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#经典同步问题"><span class="nav-number"></span> <span class="nav-text">经典同步问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></li></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
       
 
       
@@ -1159,7 +995,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/06/10/进程同步/'
+    refer: '2020/05/19/leetcode2/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
